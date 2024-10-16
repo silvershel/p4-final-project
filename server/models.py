@@ -14,21 +14,24 @@ class User(db.Model, SerializerMixin):
     # last_name
     # profile_image (pre-set based on type)
     # location (postal code. start with zip - used to match nearby events)
-    # username
-        # validation
-            # Must be unique
-            # Must be a string
-    # password
-        # validation - must be at least 8 characters contain one number and one special character.
+    username = db.Model(db.String, unique=True)
+    password = db.Model(db.String, nullable=False)
 
     # add relationship to event
     # add relationship to attendee
+
+    # username validation
+            # Must be unique
+            # Must be a string
+
+    # password validation
+        # must be at least 8 characters, contain one number, and contain one special character.
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
     id = db.Model(db.Integer, primary_key=True)
-    # name
+    name = db.Model(db.String)
     # type (festival, retreat, local meetup)
     # location (venue name, street, city, state, zip, country)
     # start date
@@ -36,7 +39,7 @@ class Event(db.Model, SerializerMixin):
     # end date (optional)
         # validation - must me MM/DD/YYYY format
     # time (stretch - add times for each day)
-    # site link
+    link = db.Model(db.String)
     # privacy (public, private)
     # user_id (foreign key)
     
