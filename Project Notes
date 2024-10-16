@@ -1,0 +1,24 @@
+<!-- 
+# OVERVIEW
+# # All viewers can view and search events.
+# A standard user can login, create/edit local meetups, bookmark events, and attend events.
+# A commercial user can login and create festivals or retreat events.
+
+# STRETCH GOALS
+    # event times
+    # friend finder
+        # find friends nearby (swiping like dating app)
+        # friend requests
+        # add bio to profiles
+        # add more fields/preferences. Make these into filters.
+            # area of interest (knitting, crochet, sewing...)
+            # age
+            # 
+        # friends can see if friends are attending events
+    # Co-organizers for commercial accounts (one main owner, rest different but can still edit)
+    # user ratings (no comments, just scale or stars)
+        # accessibility checks
+        # ambiance
+        # food available?
+    # Feedback form for site admin 
+    -->
