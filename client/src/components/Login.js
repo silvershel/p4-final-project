@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { Link } from "react-router-dom";
 
 function LoginForm() {
     const [username, setUsername] = useState('');
@@ -17,6 +18,7 @@ function LoginForm() {
                     <input type="text" value={password}/>
                 </div>
                 <button>Log In</button>
+                <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
             </form>
         </div>
     )

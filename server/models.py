@@ -19,6 +19,9 @@ class User(db.Model):
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
 
+    def __repr__(self):
+        return f"<User {self.username}>"
+
     # relationships
     # events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
     # attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')

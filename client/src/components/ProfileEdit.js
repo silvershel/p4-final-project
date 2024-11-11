@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 
-function SignupForm() {
+function ProfileEdit() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+
 
     return (
         <div>
-            <h1>Sign Up</h1>
+            <h1>Edit Profile</h1>
             <form>
                 <div>
                     <label>First Name:</label>
@@ -18,18 +17,10 @@ function SignupForm() {
                     <label>Last Name:</label>
                     <input type="text" value={lastName}/>
                 </div>
-                <div>
-                    <label>Username:</label>
-                    <input type="text" value={username}/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="text" value={password}/>
-                </div>
-                <button>Sign Up</button>
+                <button>Submit</button>
             </form>
         </div>
     )
 }
 
-export default SignupForm;
+export default ProfileEdit;
