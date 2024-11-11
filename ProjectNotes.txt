@@ -1,41 +1,34 @@
+
+
 MVP
-As a viewer I can:
+A standard user can:
     view all events
-    search events
-As a standard user I can:
-    view all events
-    search events
-    create an account
+    filter events
     login/out
-    create/edit local meetup events
+    create/edit local meetups
     bookmark events
     attend events
-As a commercial user I can:
+A business user can:
     view all events
-    search events
-    create an account
+    filter events
     login/out
     create/edit all event types
     bookmark events
     attend events
 
 STRETCH GOALS
-USERS
-    friend finder
-        friend requests
-        find friends nearby (swiping)
-    profile enhancements
-        add bio
-        add more fields/preferences for filtering
-            age
-            area of interest (knitting, crochet, sewing...)
-EVENTS
-    Event times
+    Users can become friends
+        Add friend button on user profile
+    Private Events for friends
+    Search/filter/sort
+        by distance/location
+        by date
+    Event details
+        Event time
+
     Co-organizers for commercial accounts (one main owner, rest different but can still edit)
-    friends can see if friends are attending events
     user ratings (no comments, just scale or stars)
-        accessibility checks
+        different areas of accessibility
         ambiance
-        food available?
-GENERAL
-    Feedback form for site admins
+        food available (y/n)
+    Feedback form for site admin

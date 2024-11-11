@@ -3,13 +3,13 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import request, session, jsonify
 from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
 # Add your model imports
-# from models import User, Event, Attendance
+from models import User, Event, Attendee
 
 # @app.before_request()
 # def check_session():
@@ -18,7 +18,23 @@ from config import app, db, api
 # Views go here!
 class Signup(Resource):
     def post(self):
-        pass
+        data = request.get_json()
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        username = data.get('username')
+        password = data.get('password')
+            
+        new_user = User(
+            first_name = first_name,
+            last_name = last_name,
+            username = username,
+            password = password
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"message": "User created successfully."}), 201
 
 class Login(Resource):
     def get(self):
@@ -44,11 +60,11 @@ class Event_List(Resource):
     def delete(self):
         pass
 
-# app.add_resource(Signup, '/signup', endpoint='signup')
-# app.add_resource(Login, '/login', endpoint='login')
-# app.add_resource(Logout, '/logout', endpoint='logout')
-# app.add_resource(CheckSession, '/check_session', endpoint='check_session')
-# app.add_resource(Event_List, '/events', endpoint='events')
+api.add_resource(Signup, '/signup', endpoint='signup')
+# api.add_resource(Login, '/login', endpoint='login')
+# api.add_resource(Logout, '/logout', endpoint='logout')
+# api.add_resource(CheckSession, '/check_session', endpoint='check_session')
+# api.add_resource(Event_List, '/events', endpoint='events')
 
 # imported with project template
 @app.route('/')

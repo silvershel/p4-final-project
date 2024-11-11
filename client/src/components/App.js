@@ -5,7 +5,12 @@ import NavBar from "../components/NavBar";
 import SignupForm from "../components/SignupForm";
 
 function App() {
-  return <h1>Project Client</h1>;
+  return (
+    <div>
+      <NavBar />
+      <SignupForm />
+    </div>
+  );
 }
 
 export default App;
