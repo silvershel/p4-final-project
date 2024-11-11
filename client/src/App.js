@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Event from "./components/Event";
 import EventEdit from "./components/EventEdit";
+import EventList from "./components/EventList";
 import EventView from "./components/EventView";
 import Profile from "./components/Profile";
 import ProfileEdit from "./components/ProfileEdit";
@@ -13,6 +14,8 @@ import ErrorPage from "./components/ErrorPage";
 function App() {
   return (
     <div>
+      <ErrorPage />
+      <EventList />
       <Event />
       <EventEdit />
       <EventView />
@@ -30,7 +33,7 @@ function App() {
     //   </Switch>
     // </Router>
 
-  );
+  )
 }
 
 export default App;

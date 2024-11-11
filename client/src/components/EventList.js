@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 
-function ErrorPage() {
+function EventList() {
     return(
         <div>
-            <h1>Error!</h1>
+            <h1>Event List</h1>
         </div>
     )
 }
 
-export default ErrorPage;
+export default EventList;
