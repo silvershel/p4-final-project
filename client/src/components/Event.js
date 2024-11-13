@@ -3,7 +3,7 @@ import React, {useState} from "react";
 function Event() {
     return(
         <div>
-            <h1>Event</h1>
+            <p>Event</p>
         </div>
     )
 }

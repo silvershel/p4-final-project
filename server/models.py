@@ -44,9 +44,9 @@ class User(db.Model):
     #         raise ValueError("Password cannot be empty.")
     #     return _password_hash
     
-    # type validation to limit events created.
-    # Username validation
-        # Constrain the user's username to be present and unique (no two users can have the same username).
+    # VALIDATIONS TO IMPLEMENT
+    # limit event type options beased on user type
+    # Username must be present and unique.
 
 
 class Event(db.Model):
@@ -66,6 +66,7 @@ class Event(db.Model):
     # user = db.relationship('User', back_populates='events')
     # attendees = db.relationship('Attendee', back_populates='event', cascade='all, delete-orphan')
 
+    # VALIDATIONS TO IMPLEMENT
     # name must be present
     # type must be one of the following (festival, retreat, local meetup)
     # date validation? No end date means end date is start date.

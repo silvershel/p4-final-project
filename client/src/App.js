@@ -1,39 +1,40 @@
-import React from "react";
+import React , { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Event from "./components/Event";
-import EventEdit from "./components/EventEdit";
+import NavBar from "./components/NavBar";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
 import EventList from "./components/EventList";
-import EventView from "./components/EventView";
-import Profile from "./components/Profile";
-import ProfileEdit from "./components/ProfileEdit";
-import ProfileView from "./components/ProfileView";
 import ErrorPage from "./components/ErrorPage";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
-    <div>
-      <ErrorPage />
-      <EventList />
-      <Event />
-      <EventEdit />
-      <EventView />
-      <Profile />
-      <ProfileEdit />
-      <ProfileView />
-    </div>
-
-    // <Router>
-    //   <Switch>
-    //     <Route path="/" exact component={LoginForm} />
-    //     <Route path="/login" exact component={Login} />
-    //     <Route path="/signup" exact component={Signup} />
-    //     <Route path="*" component={ErrorPage} />
-    //   </Switch>
-    // </Router>
-
-  )
+    <Router>
+      <div>
+        {isLoggedIn && <NavBar onLogout={handleLogout}/>}
+        
+        <Switch>
+          <Route path="/" exact>
+            {!isLoggedIn ? (<LoginForm onLogin={handleLogin} />) : (<EventList />)}
+          </Route>
+          <Route path="/login" exact>
+            {!isLoggedIn ? (<LoginForm onLogin={handleLogin} />) : (<EventList />)}
+          </Route>
+          <Route path="/signup" exact component={SignupForm} />
+          <Route path="*" component={ErrorPage} />
+        </Switch>
+      </div>
+    </Router>
+  );
 }
 
 export default App;

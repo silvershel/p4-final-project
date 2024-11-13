@@ -1,24 +1,15 @@
 #!/usr/bin/env python3
 
-# Standard library imports
-
-# Remote library imports
 from flask import request, session, jsonify
 from flask_restful import Resource
-
-# Local imports
 from config import app, db, api
-# Add your model imports
 from models import User, Event, Attendee
-
-# @app.before_request()
-# def check_session():
-#     pass
 
 # Views go here!
 class Signup(Resource):
     def post(self):
         data = request.get_json()
+        
         first_name = data.get('first_name')
         last_name = data.get('last_name')
         username = data.get('username')
@@ -34,7 +25,7 @@ class Signup(Resource):
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"message": "User created successfully."}), 201
+        return {"message": "User created successfully."}, 201
 
 class Login(Resource):
     def get(self):

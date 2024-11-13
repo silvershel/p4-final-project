@@ -1,14 +1,19 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
-function LoginForm() {
+function LoginForm({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onLogin();
+      };
 
     return (
         <div>
             <h1>Log In</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>
                     <input type="text" value={username}/>
