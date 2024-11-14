@@ -38,9 +38,14 @@ class Logout(Resource):
 class CheckSession(Resource):
     pass
 
-class Event_List(Resource):
+class Events(Resource):
     def get(self):
-        pass
+        try:
+            event_list = [event.to_dict() for event in Event.query.all()]
+            return jsonify(event_list), 200
+    
+        except Exception as e:
+            return jsonify({'error': str(e) + "error is here"}), 500
 
     def post(self):
         pass
@@ -55,7 +60,7 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 # api.add_resource(Login, '/login', endpoint='login')
 # api.add_resource(Logout, '/logout', endpoint='logout')
 # api.add_resource(CheckSession, '/check_session', endpoint='check_session')
-# api.add_resource(Event_List, '/events', endpoint='events')
+api.add_resource(Events, '/events', endpoint='events')
 
 # imported with project template
 @app.route('/')

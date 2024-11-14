@@ -1,9 +1,10 @@
 import React , { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventList from "./components/EventList";
+import Profile from "./components/Profile";
 import ErrorPage from "./components/ErrorPage";
 
 function App() {
@@ -27,9 +28,15 @@ function App() {
             {!isLoggedIn ? (<LoginForm onLogin={handleLogin} />) : (<EventList />)}
           </Route>
           <Route path="/login" exact>
-            {!isLoggedIn ? (<LoginForm onLogin={handleLogin} />) : (<EventList />)}
+            {!isLoggedIn ? (<LoginForm onLogin={handleLogin} />) : <Redirect to="/events" />}
           </Route>
           <Route path="/signup" exact component={SignupForm} />
+          <Route path="/profile" exact component={Profile}>
+            {isLoggedIn ? <Profile /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/events" exact component={EventList}>
+            {isLoggedIn ? <EventList /> : <Redirect to="/login" />}
+          </Route>
           <Route path="*" component={ErrorPage} />
         </Switch>
       </div>

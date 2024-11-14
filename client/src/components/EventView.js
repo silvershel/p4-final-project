@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 
-function EventView() {
+function EventView({ onEditClick, event }) {
     return(
         <div>
-            <h1>View Event</h1>
-            <p>Event Name</p>
+            <p>{event.name}</p>
+            <p>Organized by</p>
             <p>Event Type</p>
             <p>Start Date</p>
             <p>End Date</p>
             <p>Event Website</p>
-            <button>Edit Event</button>
+            <button onClick={onEditClick}>Edit Event</button>
         </div>
     )
 }

@@ -1,9 +1,21 @@
 import React, {useState} from "react";
+import ProfileEdit from "./ProfileEdit";
+import ProfileView from "./ProfileView";
 
 function Profile() {
+    const [isEditing, setIsEditing] = useState(false)
+
+    function handleEditClick() {
+        setIsEditing(true)
+    }
+
+    function handleViewClick() {
+        setIsEditing(false)
+    }
+
     return(
         <div>
-            <h1>Profile</h1>
+            {!isEditing ? (<ProfileView onEditClick={handleEditClick}/>) :( <ProfileEdit onViewClick={handleViewClick}/>)}
         </div>
     )
 }

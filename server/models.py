@@ -4,13 +4,12 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship, validates
 
-from config import db
-import bcrypt
+from config import db, bcrypt
 
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    # serialize_rules = ('-password',)
+    serialize_rules = ('-password',)
 
     id = db.Column(Integer, primary_key=True)
     # type = db.Column(String)
@@ -49,10 +48,10 @@ class User(db.Model):
     # Username must be present and unique.
 
 
-class Event(db.Model):
+class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
-    # serialize_rules = ('-user_id',)
+    serialize_rules = ('-user_id',)
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String, nullable=False)
@@ -72,10 +71,10 @@ class Event(db.Model):
     # date validation? No end date means end date is start date.
 
 
-class Attendee(db.Model):
+class Attendee(db.Model, SerializerMixin):
     __tablename__ = 'attendees'
 
-    # serialize_rules = ('-user_id', '-event_id',)
+    serialize_rules = ('-user_id', '-event_id',)
 
     id = db.Column(Integer, primary_key=True)
     comment = db.Column(String)

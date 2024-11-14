@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 
-function ProfileView() {
+function ProfileView({onEditClick}) {
     return(
         <div>
-            <h1>View Profile</h1>
+            <h1>Welcome, Username!</h1>
             <p>First Name</p>
             <p>Last Name</p>
-            <button>Edit Profile</button>
+            <button onClick={onEditClick}>Edit Profile</button>
         </div>
     )
 }
