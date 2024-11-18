@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import EventList from "./EventList";
 
 function ProfileView({onEditClick}) {
     return(
@@ -7,6 +8,8 @@ function ProfileView({onEditClick}) {
             <p>First Name</p>
             <p>Last Name</p>
             <button onClick={onEditClick}>Edit Profile</button>
+            <h2>My Events</h2>
+            <EventList />
         </div>
     )
 }

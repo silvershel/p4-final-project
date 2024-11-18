@@ -43,15 +43,22 @@ class User(db.Model, SerializerMixin):
     #         raise ValueError("Password cannot be empty.")
     #     return _password_hash
     
+    # @validates('username')
+    # def validate_username(self, key, username):
+    #     existing_username = User.query.filter(User.username == username).first()
+    #     if not username:
+    #         raise ValueError("Username must be present.")
+    #     if existing_username:
+    #         raise ValueError("Username must be unique.")
+    #     return username
+    
     # VALIDATIONS TO IMPLEMENT
     # limit event type options beased on user type
-    # Username must be present and unique.
-
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
-    serialize_rules = ('-user_id',)
+    # serialize_rules = ('-user_id',)
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String, nullable=False)

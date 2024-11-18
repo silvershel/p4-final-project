@@ -5,7 +5,7 @@ function EventList() {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/events")
+        fetch("/events")
         .then((r) => r.json())
         .then((events) => {
             console.log(events);
@@ -30,14 +30,6 @@ function EventList() {
             )}
         </div>
     )
-
-    // return (
-    //     <div>
-    //         <h1>Event List</h1>
-    //         <p>Filter: All | Attending | My Events</p>
-    //         <Event />
-    //     </div>
-    // )
 }
 
 export default EventList;

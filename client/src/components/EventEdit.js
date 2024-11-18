@@ -28,6 +28,7 @@ function EventEdit({ onViewClick }) {
                 <input type="text"></input>
             </div>
             <button onClick={onViewClick}>Save Edits</button>
+            <button>Delete Event</button>
         </div>
     )
 }
