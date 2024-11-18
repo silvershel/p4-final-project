@@ -1,18 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Event from "./Event";
 
-function EventList() {
-    const [events, setEvents] = useState([]);
-
-    useEffect(() => {
-        fetch("/events")
-        .then((r) => r.json())
-        .then((events) => {
-            console.log(events);
-            setEvents(events);
-        })
-        .catch((error) => console.error('Error fetching events:', error));
-    }, [])
+function EventList({events}) {
 
     return (
         <div>

@@ -8,9 +8,12 @@ import Profile from "./components/Profile";
 import ErrorPage from "./components/ErrorPage";
 
 function App() {
-
-	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const [user, setUser] = useState(null)
+	const [events, setEvents] = useState([])
+
+	function handleLogout() {
+		setUser(null);
+	};
 
 	useEffect(() => {
 		fetch("/check_session")
@@ -21,29 +24,32 @@ function App() {
 		});
 	}, [])
 
-	function handleLogout() {
-		setIsLoggedIn(false);
-		setUser(null);
-	};
+	useEffect(() => {
+        fetch("/events")
+        .then((r) => r.json())
+        .then((events) => {
+            console.log(events);
+            setEvents(events);
+        })
+        .catch((error) => console.error('Error fetching events:', error));
+    }, [])
+
+	if (!user) return <LoginForm onLogin={setUser} style={containerStyle}/>
 
 	return (
 		<Router>
 		<div style={containerStyle}>
-			{isLoggedIn && <NavBar onLogout={handleLogout}/>}
+			<NavBar onLogout={handleLogout}/>
 			
 			<Switch>
 			<Route path="/" exact>
-				{!isLoggedIn ? (<LoginForm onLogin={setUser} />) : (<EventList />)}
+				<EventList events={events}/>
 			</Route>
-			<Route path="/login" exact>
-				{!isLoggedIn ? (<LoginForm onLogin={setUser} />) : <Redirect to="/events" />}
-			</Route>
-			<Route path="/signup" exact component={SignupForm} onLogin={setUser} />
 			<Route path="/profile" exact component={Profile}>
-				{isLoggedIn ? <Profile /> : <Redirect to="/login" />}
+				<Profile events={events} user={user}/>
 			</Route>
 			<Route path="/events" exact component={EventList}>
-				{isLoggedIn ? <EventList /> : <Redirect to="/login" />}
+				<EventList events={events}/>
 			</Route>
 			<Route path="*" component={ErrorPage} />
 			</Switch>

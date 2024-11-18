@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
-function LoginForm({ onLogin }) {
+function LoginForm({ onLogin, style }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
@@ -32,7 +32,7 @@ function LoginForm({ onLogin }) {
     // }
 
     return (
-        <div>
+        <div style={style}>
             <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -47,7 +47,7 @@ function LoginForm({ onLogin }) {
                     {errors ? "" : "Error"}
                 </div>
                 <button type="submit">Log In</button>
-                <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+                <p>Don't have an account?</p>
             </form>
         </div>
     )

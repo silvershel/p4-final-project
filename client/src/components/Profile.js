@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import ProfileEdit from "./ProfileEdit";
 import ProfileView from "./ProfileView";
 
-function Profile() {
+function Profile({events, user}) {
     const [isEditing, setIsEditing] = useState(false)
 
     function handleEditClick() {
@@ -15,7 +15,7 @@ function Profile() {
 
     return(
         <div>
-            {!isEditing ? (<ProfileView onEditClick={handleEditClick}/>) :( <ProfileEdit onViewClick={handleViewClick}/>)}
+            {!isEditing ? (<ProfileView onEditClick={handleEditClick} events={events} user={user}/>) :( <ProfileEdit onViewClick={handleViewClick}/>)}
         </div>
     )
 }

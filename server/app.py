@@ -125,46 +125,53 @@ class Events(Resource):
         except Exception as e:
             return {'message': str(e)}, 500
         
-# class Event(Resource):
-#     def get(self, event_id):
-#         event = Event.query.get(event_id)
-#         if event:
-#             return event.to_dict(), 200
-#         else:
-#             return {'message': 'Event not found'}, 404
+class EventById(Resource):
+    def get(self, event_id):
+        event = Event.query.get(event_id)
+        if event:
+            return event.to_dict(), 200
+        else:
+            return {'message': 'Event not found'}, 404
 
-#     def patch(self, event_id):
-#         data = request.get_json()
+    def patch(self, event_id):
+        data = request.get_json()
 
-#         event = Event.query.get(event_id)
-#         if not event:
-#             return {'message': 'Event not found'}, 404
+        event = Event.query.get(event_id)
+        if not event:
+            return {'message': 'Event not found'}, 404
         
-#         if 'name' in data:
-#             event.name = data['name']
-#         if 'start_date' in data:
-#             event.start_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date()
-#         if 'end_date' in data:
-#             event.end_date = datetime.strptime(data['end_date'], '%Y-%m-%d').date()
-#         if 'website_link' in data:
-#             event.website_link = data['website_link']
+        if 'name' in data:
+            event.name = data['name']
+        if 'start_date' in data:
+            event.start_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date()
+        if 'end_date' in data:
+            event.end_date = datetime.strptime(data['end_date'], '%Y-%m-%d').date()
+        if 'website_link' in data:
+            event.website_link = data['website_link']
 
-#         try:
-#             db.session.commit()
-#             return event.to_dict(), 200
-#         except Exception as e:
-#             db.session.rollback()
-#             return {'message': 'Error updating event', 'error': str(e)}, 422
+        try:
+            db.session.commit()
+            return event.to_dict(), 200
+        except Exception as e:
+            db.session.rollback()
+            return {'message': 'Error updating event', 'error': str(e)}, 422
         
-#     def delete(self, event_id):
-#         pass
+    def delete(self, event_id):
+        event = Event.query.get(event_id)
+        if not event:
+            return {'message': 'Event not found'}, 404
+        db.session.delete(event)
+        db.session.commit()
+        return {'message': 'Event deleted'}, 200
+
+
 
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Events, '/events', endpoint='events')
-# api.add_resource(Event, '/events/<int:event_id>', endpoint='event')
+api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
 
 # imported with project template
 @app.route('/')
