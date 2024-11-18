@@ -15,13 +15,22 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
         
-        # Clear existing data
+        # Delete Existing Data
         User.query.delete()
         Event.query.delete()
         Attendee.query.delete()
         db.session.commit()
 
         # Seed Users
+        test_user = User(
+            first_name="Shelli",
+            last_name="Sample",
+            username="shelli",
+            password="password"
+        )
+        db.session.add(test_user)
+        db.session.commit()
+
         users = []
         used_usernames = set()
 
@@ -45,6 +54,38 @@ if __name__ == '__main__':
         print(f"Created {len(users)} users.")
 
         # Seed Events
+        user_integer = int(1)
+
+        test_event1 = Event(
+            name="Shelli's Event 1",
+            start_date=fake.future_date(end_date=True),
+            end_date=fake.future_date(end_date=True),
+            user_id=user_integer,
+            website_link=fake.url()
+        )
+        db.session.add(test_event1)
+        db.session.commit()
+
+        test_event2 = Event(
+            name="Shelli's Event 2",
+            start_date=fake.future_date(end_date=True),
+            end_date=fake.future_date(end_date=True),
+            user_id=user_integer,
+            website_link=fake.url()
+        )
+        db.session.add(test_event2)
+        db.session.commit()
+
+        test_event3 = Event(
+            name="Shelli's Event 3",
+            start_date=fake.future_date(end_date=True),
+            end_date=fake.future_date(end_date=True),
+            user_id=user_integer,
+            website_link=fake.url()
+        )
+        db.session.add(test_event3)
+        db.session.commit()
+
         events = []
         for i in range(10):
             user = rc(users)

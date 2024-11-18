@@ -15,7 +15,7 @@ function Event({ event }) {
 
     return(
         <div>
-            {!isEditing ? (<EventView onEditClick={handleEditClick} event={event}/>) :( <EventEdit onViewClick={handleViewClick} event={event}/>)}
+            {!isEditing ? (<EventView onEditClick={handleEditClick} event={event} />) :( <EventEdit onViewClick={handleViewClick} event={event}/>)}
         </div>
     )
 }

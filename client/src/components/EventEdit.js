@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 
-function EventEdit({ onViewClick }) {
+function EventEdit({ event, onViewClick }) {
+
     return(
         <div>
             <div>
-                <label>Event Name:</label>
+                <label>Event Name</label>
                 <input type="text"></input>
             </div>
             <div>

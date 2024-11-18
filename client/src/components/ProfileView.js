@@ -1,22 +1,20 @@
-import React, {useState} from "react";
+import React from "react";
 import Event from "./Event";
 
-function ProfileView({onEditClick, events, user}) {
-    const userEvents = events.filter(event => event.user_id === user.id);
+function ProfileView({ onEditClick, user, events }) {
+    const userEvents = events.filter(event => user.id === event.user_id)
 
     return(
         <div>
-            <h1>Welcome, {user.first_name}</h1>
-            <p>First Name</p>
-            <p>Last Name</p>
+            <h1>Welcome, {user.username}</h1>
+            <p>First Name: {user.first_name}</p>
+            <p>Last Name {user.last_name}</p>
             <button onClick={onEditClick}>Edit Profile</button>
             <h2>My Events</h2>
             <div>
                 {userEvents.length > 0 ? (
                     userEvents.map((event) => (
-                    <Event key={event.id}>
-                        <h2>{event.name}</h2>
-                    </Event>
+                        <Event key={event.id} event={event} />
                     ))
                 ) : (
                     <>

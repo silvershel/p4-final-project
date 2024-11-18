@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 
 function EventView({ onEditClick, event }) {
+
     return(
         <div>
-            <p>{event.name}</p>
-            <p>Organized by</p>
+            <h2>{event.name}</h2>
+            <p>Organized by:</p>
             <p>Event Type</p>
-            <p>Start Date</p>
-            <p>End Date</p>
-            <p>Event Website</p>
+            <p>Start Date: {event.start_date}</p>
+            <p>End Date: {event.end_date}</p>
+            <p >Event Website: {event.website_link}</p>
             <button onClick={onEditClick}>Edit Event</button>
         </div>
     )

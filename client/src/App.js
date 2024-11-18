@@ -11,10 +11,6 @@ function App() {
 	const [user, setUser] = useState(null)
 	const [events, setEvents] = useState([])
 
-	function handleLogout() {
-		setUser(null);
-	};
-
 	useEffect(() => {
 		fetch("/check_session")
 		.then((r) => {
@@ -34,13 +30,16 @@ function App() {
         .catch((error) => console.error('Error fetching events:', error));
     }, [])
 
+	function handleLogout() {
+		setUser(null);
+	};
+
 	if (!user) return <LoginForm onLogin={setUser} style={containerStyle}/>
 
 	return (
 		<Router>
 		<div style={containerStyle}>
 			<NavBar onLogout={handleLogout}/>
-			
 			<Switch>
 			<Route path="/" exact>
 				<EventList events={events}/>

@@ -16,6 +16,7 @@ function NavBar({ onLogout }) {
 		<div>
 			<h1>Nav Bar</h1>
 			<div>
+				<Link to="/">Home</Link>
 				<Link to="/profile">Profile</Link>
 				<Link to="/events">Events</Link>
 				<button onClick={handleLogout}>Logout</button>
