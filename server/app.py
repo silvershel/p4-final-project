@@ -51,7 +51,7 @@ class CheckSession(Resource):
             if user_id:
                 user = User.query.get(user_id)
                 if user:
-                    return {'message': 'CheckSession successful', 'user': user.to_dict()}, 200
+                    return user.to_dict(), 200
                 else:
                     return {'message': 'User not found in session.'}, 404
             else:
