@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Event from "./Event";
+import EventForm from "./EventForm";
 
-function ProfileView({ onEditClick, user, events }) {
+function ProfileView({ onEditClick, user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
+    const [createEvent, setCreateEvent] = useState(false)
+
     const userEvents = events.filter(event => user.id === event.user_id)
+
+    function handleCreateEventClick() {
+        setCreateEvent(prevState => !prevState);
+    }
 
     return(
         <div>
@@ -10,19 +17,31 @@ function ProfileView({ onEditClick, user, events }) {
             <p>First Name: {user.first_name}</p>
             <p>Last Name {user.last_name}</p>
             <button onClick={onEditClick}>Edit Profile</button>
-            <h2>My Events</h2>
-            <div>
+            <h1>My Events</h1>
+            {!createEvent ? <button onClick={handleCreateEventClick}>Create Event</button> : null}
+            {!createEvent ? <div>
                 {userEvents.length > 0 ? (
                     userEvents.map((event) => (
-                        <Event key={event.id} event={event} />
+                        <Event 
+                            key={event.id} 
+                            event={event} 
+                            onDeleteEvent={onDeleteEvent} 
+                            onUpdateEvent={onUpdateEvent}
+                        />
                     ))
                 ) : (
                     <>
                     <h2>No Events Found</h2>
-                    <button>Create an Event</button>
                     </>
                 )}
-            </div>
+                </div> : 
+                    <EventForm 
+                        user={user}
+                        onCreateEvent={onCreateEvent}
+                        createEventClick={handleCreateEventClick}
+                    />
+            }
+            
         </div>
     )
 }

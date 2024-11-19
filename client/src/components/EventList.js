@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from "react";
 import Event from "./Event";
 
-function EventList({ events }) {
+function EventList({ events, onDeleteEvent, onUpdateEvent }) {
 
     return (
         <div>
-           {events.length > 0 ? (
+            <h1>All Events</h1>
+            {events.length > 0 ? (
                 events.map((event) => (
-                    <Event key={event.id} event={event} />
+                    <Event key={event.id} event={event} onDeleteEvent={onDeleteEvent} onUpdateEvent={onUpdateEvent} />
                 ))
             ) : (
                 <>
                 <h2>No Events Found</h2>
-                <button>Create an Event</button>
                 </>
             )}
         </div>

@@ -11,6 +11,10 @@ function App() {
 	const [user, setUser] = useState(null)
 	const [events, setEvents] = useState([])
 
+	function handleLogout() {
+		setUser(null);
+	};
+
 	useEffect(() => {
 		fetch("/check_session")
 		.then((r) => {
@@ -30,9 +34,63 @@ function App() {
         .catch((error) => console.error('Error fetching events:', error));
     }, [])
 
-	function handleLogout() {
-		setUser(null);
-	};
+	function handleCreateEvent(newEvent) {
+		fetch('/events', {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify(newEvent),
+		})
+		  .then((r) => r.json())
+		  .then((newEvent) => {
+			setEvents((prevEvents) => {
+			  const updatedEvents = [...prevEvents, newEvent];
+			  return updatedEvents;
+			});
+		  })
+		  .catch((error) => {
+			console.error('Error creating new event:', error);
+		  });
+	  };
+
+	function handleUpdateEvent(eventId, updatedEvent) {
+        fetch(`/events/${eventId}`, {
+            method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(updatedEvent),
+		})
+        .then((r) => r.json())
+		.then((updatedEvent) => {
+			setEvents((prevEvents) => 
+				prevEvents.map((event) =>
+					event.id === updatedEvent.id ? updatedEvent : event
+				)
+			);
+		})
+		.catch((error) => {
+			console.error("Error updating event:", error);
+		});
+    }
+
+	function handleDeleteEvent(eventId) {
+        fetch(`/events/${eventId}`, {
+            method: 'DELETE',
+        })
+        .then(r => {
+            if (r.ok) {
+				setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
+                console.log("Event deleted.");
+            } else {
+                console.error("Unable to delete event.");
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting event:", error);
+        });
+    }
 
 	if (!user) return <LoginForm onLogin={setUser} style={containerStyle}/>
 
@@ -42,13 +100,10 @@ function App() {
 			<NavBar onLogout={handleLogout}/>
 			<Switch>
 			<Route path="/" exact>
-				<EventList events={events}/>
+				<EventList events={events} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} />
 			</Route>
 			<Route path="/profile" exact component={Profile}>
-				<Profile events={events} user={user}/>
-			</Route>
-			<Route path="/events" exact component={EventList}>
-				<EventList events={events}/>
+				<Profile events={events} user={user} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} onCreateEvent={handleCreateEvent} />
 			</Route>
 			<Route path="*" component={ErrorPage} />
 			</Switch>

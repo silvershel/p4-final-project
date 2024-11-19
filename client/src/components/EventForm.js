@@ -1,31 +1,28 @@
 import React, { useState } from "react";
 
-function EventEdit({ event, onViewClick, onDeleteEvent, onUpdateEvent }) {
-    const [name, setName] = useState(event.name);
-    const [startDate, setStartDate] = useState(event.start_date);
-    const [endDate, setEndDate] = useState(event.end_date);
-    const [websiteLink, setWebsiteLink] = useState(event.website_link);
+function EventForm({ user, onCreateEvent, createEventClick }) {
+    const [name, setName] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [websiteLink, setWebsiteLink] = useState("");
 
     function handleSubmit(e) {
         e.preventDefault();
-        const updatedEvent = {
+        const newEvent = {
             name: name,
             start_date: startDate,
             end_date: endDate,
             website_link: websiteLink,
+            user_id: user.id
           };
-          console.log(updatedEvent);
-        onUpdateEvent(event.id, updatedEvent)
-        onViewClick()
-    }
-
-    function handleDelete() {
-        onDeleteEvent(event.id);
+        console.log(newEvent);
+        onCreateEvent(newEvent);
+        createEventClick()
     }
 
     return (
         <div>
-            <h2>Edit Event</h2>
+            <h2>Create Event</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Event Name</label>
@@ -63,11 +60,10 @@ function EventEdit({ event, onViewClick, onDeleteEvent, onUpdateEvent }) {
                         onChange={(e) => setWebsiteLink(e.target.value)}
                     />
                 </div>
-                <button type="submit">Save Edits</button>
-                <button onClick={handleDelete} type="submit">Delete Event</button>
+                <button type="submit">Save</button>
             </form>
         </div>
     );
 }
 
-export default EventEdit;
+export default EventForm;

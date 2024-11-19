@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import EventView from "./EventView";
 import EventEdit from "./EventEdit";
 
-function Event({ event }) {
+function Event({ event, onDeleteEvent, onUpdateEvent }) {
     const [isEditing, setIsEditing] = useState(false)
 
     function handleEditClick() {
@@ -15,7 +15,17 @@ function Event({ event }) {
 
     return(
         <div>
-            {!isEditing ? (<EventView onEditClick={handleEditClick} event={event} />) :( <EventEdit onViewClick={handleViewClick} event={event}/>)}
+            {!isEditing ? (
+                <EventView onEditClick={handleEditClick} 
+                    event={event} 
+                />
+                ) : ( 
+                <EventEdit onViewClick={handleViewClick} 
+                    event={event} 
+                    onDeleteEvent={onDeleteEvent} 
+                    onUpdateEvent={onUpdateEvent} 
+                />
+            )}
         </div>
     )
 }
