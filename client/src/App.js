@@ -102,6 +102,9 @@ function App() {
 			<Route path="/" exact>
 				<EventList events={events} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} />
 			</Route>
+			<Route path="/signup" exact component={SignupForm}>
+				<SignupForm />
+			</Route>
 			<Route path="/profile" exact component={Profile}>
 				<Profile events={events} user={user} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} onCreateEvent={handleCreateEvent} />
 			</Route>

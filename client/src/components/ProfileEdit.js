@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ProfileEdit({onViewClick}) {
+function ProfileEdit({onEditClick}) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
@@ -17,7 +17,7 @@ function ProfileEdit({onViewClick}) {
                     <label>Last Name:</label>
                     <input type="text" value={lastName}/>
                 </div>
-                <button onClick={onViewClick}>Submit</button>
+                <button onClick={onEditClick}>Submit</button>
             </form>
         </div>
     )

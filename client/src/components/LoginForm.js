@@ -47,8 +47,8 @@ function LoginForm({ onLogin, style }) {
                     {errors ? "" : "Error"}
                 </div>
                 <button type="submit">Log In</button>
-                <p>Don't have an account?</p>
             </form>
+            <p>Don't have an account?</p>
         </div>
     )
 }
