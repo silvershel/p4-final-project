@@ -9,7 +9,7 @@ function ProfileView({ user, events, onEditClick, onCreateClick, onDeleteEvent, 
         <div>
             <h1>Welcome, {user.username}</h1>
             <p>First Name: {user.first_name}</p>
-            <p>Last Name {user.last_name}</p>
+            <p>Last Name: {user.last_name}</p>
             <button onClick={onEditClick}>Edit Profile</button>
             <button onClick={onCreateClick}>Create Event</button>
             <h1>My Events</h1>
@@ -18,6 +18,7 @@ function ProfileView({ user, events, onEditClick, onCreateClick, onDeleteEvent, 
                     userEvents.map((event) => (
                         <Event 
                             key={event.id} 
+                            user={user}
                             event={event} 
                             onDeleteEvent={onDeleteEvent} 
                             onUpdateEvent={onUpdateEvent}

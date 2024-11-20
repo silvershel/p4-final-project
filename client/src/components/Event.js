@@ -1,33 +1,45 @@
 import React, {useState} from "react";
 import EventView from "./EventView";
 import EventEdit from "./EventEdit";
+import AttendForm from "./AttendForm";
 
-function Event({ event, onDeleteEvent, onUpdateEvent }) {
+function Event({ user, event, onDeleteEvent, onUpdateEvent }) {
     const [isEditing, setIsEditing] = useState(false)
+    const [isAttending, setIsAttending] = useState(false)
 
     function handleEditClick() {
-        setIsEditing(true)
+        setIsEditing(prevState => !prevState)
     }
 
-    function handleViewClick() {
-        setIsEditing(false)
+    function handleAttendingClick() {
+        setIsAttending(prevState => !prevState)
     }
 
-    return(
-        <div>
-            {!isEditing ? (
-                <EventView onEditClick={handleEditClick} 
-                    event={event} 
-                />
-                ) : ( 
-                <EventEdit onViewClick={handleViewClick} 
-                    event={event} 
-                    onDeleteEvent={onDeleteEvent} 
-                    onUpdateEvent={onUpdateEvent} 
-                />
-            )}
-        </div>
-    )
+    if (isEditing) {
+        return (
+            <EventEdit 
+                onViewClick={handleEditClick} 
+                event={event} 
+                onDeleteEvent={onDeleteEvent} 
+                onUpdateEvent={onUpdateEvent} 
+            />
+        );
+    } else if (isAttending) {
+        return (
+            <AttendForm 
+                onAttendClick={handleAttendingClick} 
+            />
+        );
+    } else {
+        return (
+            <EventView 
+                user={user} 
+                event={event}
+                onEditClick={handleEditClick}
+                onAttendClick={handleAttendingClick}
+            />
+        );
+    }
 }
 
 export default Event;

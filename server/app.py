@@ -43,6 +43,7 @@ class Signup(Resource):
         except Exception:
             return {'message': 'Signup error'}, 422
     
+    
 class CheckSession(Resource):
     def get(self):
         try:
@@ -59,6 +60,7 @@ class CheckSession(Resource):
 
         except Exception as e:
             return {'message': 'Internal server error', 'error': str(e)}, 500
+        
 
 class Login(Resource):
     def post(self):
@@ -76,6 +78,7 @@ class Login(Resource):
             return user.to_dict(), 200
         else:
             return {"error": "Login unsuccessful"}, 401
+        
 
 class Logout(Resource):
     def delete(self):
@@ -84,6 +87,7 @@ class Logout(Resource):
             return {}, 204
         else:
             return {'error': 'No user logged in'}, 400
+        
 
 class Events(Resource):
     def get(self):
@@ -125,6 +129,7 @@ class Events(Resource):
         except Exception as e:
             return {'message': str(e)}, 500
         
+        
 class EventById(Resource):
     def get(self, event_id):
         event = Event.query.get(event_id)
@@ -163,7 +168,73 @@ class EventById(Resource):
         db.session.delete(event)
         db.session.commit()
         return {'message': 'Event deleted'}, 200
+    
+    
+class Attendee(Resource):
+    def get(self):
+        try:
+            attendees = [attendee.to_dict() for attendee in Attendee.query.all()]
+            return jsonify(attendees)
 
+        except Exception as e:
+            return {'error': str(e) + "error getting attendees."}, 422
+
+    def post(self):
+        data = request.get_json()
+        
+        comment = data.get('comment')
+        user_id = data.get('user_id')
+        event_id = data.get('event_id')
+        
+        new_attendee = Attendee(
+            comment = comment,
+            user_id = user_id,
+            event_id = event_id
+        )
+
+        try:
+            db.session.add(new_attendee)
+            db.session.commit()
+            return new_attendee.to_dict(), 201
+        
+        except Exception as e:
+            return {'message': str(e)}, 500
+
+
+class AttendeeById(Resource):
+    def get(self, attendee_id):
+        attendee = Attendee.query.get(attendee_id)
+        if attendee:
+            return attendee.to_dict(), 200
+        else:
+            return {'message': 'Attendee not found'}, 404
+     
+    def patch(self, attendee_id):
+        data = request.get_json()
+
+        attendee = Attendee.query.get(attendee_id)
+
+        if not attendee:
+            return {'message': 'Attendee not found'}, 404
+        
+        if 'comment' in data:
+            attendee.comment = data['comment']
+
+        try:
+            db.session.commit()
+            return attendee.to_dict(), 200
+        
+        except Exception as e:
+            db.session.rollback()
+            return {'message': 'Error updating comment', 'error': str(e)}, 422
+
+    def delete(self, attendee_id):
+        attendee = Attendee.query.get(attendee_id)
+        if not attendee:
+            return {'message': 'Attendee not found'}, 404
+        db.session.delete(attendee)
+        db.session.commit()
+        return {'message': 'Attendee deleted'}, 200
 
 
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')

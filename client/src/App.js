@@ -1,5 +1,5 @@
 import React , { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
@@ -99,14 +99,17 @@ function App() {
 		<div style={containerStyle}>
 			<NavBar onLogout={handleLogout}/>
 			<Switch>
-			<Route path="/" exact>
-				<EventList events={events} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} />
+			<Route path="/login" exact>
+				<LoginForm onLogin={setUser} />
 			</Route>
-			<Route path="/signup" exact component={SignupForm}>
+			<Route path="/signup" exact>
 				<SignupForm />
 			</Route>
+			<Route path="/" exact>
+				<EventList user={user} events={events} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} />
+			</Route>
 			<Route path="/profile" exact component={Profile}>
-				<Profile events={events} user={user} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} onCreateEvent={handleCreateEvent} />
+				<Profile user={user} events={events} onDeleteEvent={handleDeleteEvent} onUpdateEvent={handleUpdateEvent} onCreateEvent={handleCreateEvent} />
 			</Route>
 			<Route path="*" component={ErrorPage} />
 			</Switch>

@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
 
 function LoginForm({ onLogin, style }) {
     const [username, setUsername] = useState('');
@@ -24,12 +23,6 @@ function LoginForm({ onLogin, style }) {
             }
         });
     }
-
-    // function errorMessage() {
-    //     return errors.map((err) => (
-    //         <p key={err}>{err}</p>
-    //       ))
-    // }
 
     return (
         <div style={style}>

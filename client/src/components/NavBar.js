@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 function NavBar({ onLogout }) {
+	const navigate = useHistory()
 
 	function handleLogout(e) {
 		fetch("/logout", { method: "DELETE" })
 		.then((r) => {
 			if (r.ok) {
 				onLogout()
+				navigate.push("/login");
 			}
 		});
 	};

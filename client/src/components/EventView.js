@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-function EventView({ onEditClick, event }) {
+function EventView({ user, event, onEditClick, onAttendClick }) {
+    
 
     return(
         <div>
@@ -11,7 +12,8 @@ function EventView({ onEditClick, event }) {
             <p>End Date: {event.end_date}</p>
             <p >Event Website: {event.website_link}</p>
             <button>View Event</button>
-            <button onClick={onEditClick}>Edit Event</button>
+            <button onClick={onAttendClick}>Attend Event</button>
+            {user.id === event.user_id ? <button onClick={onEditClick}>Edit Event</button> : null}
         </div>
     )
 }
