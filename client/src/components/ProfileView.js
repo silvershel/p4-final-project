@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Event from "./Event";
 import EventForm from "./EventForm";
 
-function ProfileView({ onEditClick, user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
+function ProfileView({ user, events, onEditClick, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
     const [createEvent, setCreateEvent] = useState(false)
 
     const userEvents = events.filter(event => user.id === event.user_id)

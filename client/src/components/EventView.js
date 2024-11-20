@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 function EventView({ onEditClick, event }) {
 
@@ -10,6 +10,7 @@ function EventView({ onEditClick, event }) {
             <p>Start Date: {event.start_date}</p>
             <p>End Date: {event.end_date}</p>
             <p >Event Website: {event.website_link}</p>
+            <button>View Event</button>
             <button onClick={onEditClick}>Edit Event</button>
         </div>
     )

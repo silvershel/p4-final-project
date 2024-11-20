@@ -5,19 +5,15 @@ import ProfileView from "./ProfileView";
 function Profile({ user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
     const [isEditing, setIsEditing] = useState(false)
 
-    function handleEditClick() {
-        setIsEditing(true)
-    }
-
-    function handleViewClick() {
-        setIsEditing(false)
+    function handleClick() {
+        setIsEditing(prevState => !prevState)
     }
 
     return(
         <div>
             {!isEditing ? (
                 <ProfileView 
-                    onEditClick={handleEditClick} 
+                    onEditClick={handleClick} 
                     user={user} 
                     events ={events} 
                     onDeleteEvent={onDeleteEvent} 
@@ -25,7 +21,7 @@ function Profile({ user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) 
                     onCreateEvent={onCreateEvent} 
                 />) : (
                 <ProfileEdit 
-                onViewClick={handleViewClick}
+                    onViewClick={handleClick}
                 />
             )}
         </div>
