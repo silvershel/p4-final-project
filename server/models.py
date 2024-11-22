@@ -9,10 +9,9 @@ from config import db, bcrypt
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-password',)
+    serialize_rules = ('-password', '-events.user', '-attendees.user')
 
     id = db.Column(Integer, primary_key=True)
-    # type = db.Column(String)
     first_name = db.Column(String)
     last_name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
@@ -21,9 +20,8 @@ class User(db.Model, SerializerMixin):
     def __repr__(self):
         return f"<User {self.username}>"
 
-    # relationships
-    # events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
-    # attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')
+    events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
+    attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')
 
     # @hybrid_property
     # def password_hash(self):
@@ -52,43 +50,44 @@ class User(db.Model, SerializerMixin):
     #         raise ValueError("Username must be unique.")
     #     return username
     
-    # VALIDATIONS TO IMPLEMENT
-    # limit event type options beased on user type
+    # STRETCH
+    # Add User type (sheep & shepherd)
+        # Validation: limit what event type can be created beased on user type
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
-    # serialize_rules = ('-user_id',)
+    serialize_rules = ('-user.events', '-attendees.event',)
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String, nullable=False)
-    # type = db.Column(String)
     start_date = db.Column(Date, nullable=False)
     end_date = db.Column(Date, nullable=True)
     website_link = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     
-    # relationships
-    # user = db.relationship('User', back_populates='events')
-    # attendees = db.relationship('Attendee', back_populates='event', cascade='all, delete-orphan')
+    user = db.relationship('User', back_populates='events')
+    attendees = db.relationship('Attendee', back_populates='event', cascade='all, delete-orphan')
 
     # VALIDATIONS TO IMPLEMENT
-    # name must be present
-    # type must be one of the following (festival, retreat, local meetup)
-    # date validation? No end date means end date is start date.
+    # Name must be present
+    # Date validation. No end date means end date is start date.
+
+    # STRETCH
+    # Add Event types (festival, retreat, local meetup)
+        # Validation: limit what event type can be created beased on user type
 
 
 class Attendee(db.Model, SerializerMixin):
     __tablename__ = 'attendees'
 
-    serialize_rules = ('-user_id', '-event_id',)
+    serialize_rules = ('user.attendees', 'event.attendees',)
 
     id = db.Column(Integer, primary_key=True)
     comment = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     event_id = db.Column(Integer, ForeignKey('events.id'), nullable=False)
 
-    # relationships
-    # user = db.relationship('User', back_populates='attendees')
-    # event = db.relationship('Event', back_populates='attendees')
+    user = db.relationship('User', back_populates='attendees')
+    event = db.relationship('Event', back_populates='attendees')
 

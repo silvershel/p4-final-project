@@ -38,12 +38,19 @@ class Signup(Resource):
             db.session.commit()
             session['user_id'] = new_user.id
 
-            return new_user.to_dict(), 201
+            response = {
+                'id': new_user.id,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'username': new_user.username,
+            }
+
+            return response, 201
         
         except Exception:
             return {'message': 'Signup error'}, 422
     
-    
+
 class CheckSession(Resource):
     def get(self):
         try:
@@ -52,7 +59,14 @@ class CheckSession(Resource):
             if user_id:
                 user = User.query.get(user_id)
                 if user:
-                    return user.to_dict(), 200
+                    response = {
+                        'id': user.id,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'username': user.username,
+                    }
+
+                    return response, 200
                 else:
                     return {'message': 'User not found in session.'}, 404
             else:
@@ -75,7 +89,16 @@ class Login(Resource):
 
         if user:
             session['user_id'] = user.id
-            return user.to_dict(), 200
+
+            response = {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'username': user.username,
+            }
+
+            return response, 200
+        
         else:
             return {"error": "Login unsuccessful"}, 401
         
@@ -92,11 +115,24 @@ class Logout(Resource):
 class Events(Resource):
     def get(self):
         try:
-            events = [event.to_dict() for event in Event.query.all()]
-            return jsonify(events)
+            events = Event.query.all()
+            events_data = []
+
+            for event in events:
+                event_data = {
+                    'id': event.id,
+                    'name': event.name,
+                    'start_date': event.start_date.isoformat(),
+                    'end_date': event.end_date.isoformat(),
+                    'website_link': event.website_link,
+                    'user_id':event.user_id,
+                }
+                events_data.append(event_data)
+                
+            return jsonify(events_data)
 
         except Exception as e:
-            return {'error': str(e) + "error getting event list."}, 422
+            return {'error': str(e)}, 422
                 
     def post(self):
         data = request.get_json()
@@ -124,7 +160,17 @@ class Events(Resource):
         try:
             db.session.add(new_event)
             db.session.commit()
-            return new_event.to_dict(), 201
+
+            response = {
+                'id': new_event.id,
+                'name': new_event.name,
+                'start_date': new_event.start_date.isoformat(),
+                'end_date': new_event.end_date.isoformat(),
+                'website_link': new_event.website_link,
+                'user_id': new_event.user_id
+            }
+
+            return response, 201
         
         except Exception as e:
             return {'message': str(e)}, 500
@@ -133,8 +179,19 @@ class Events(Resource):
 class EventById(Resource):
     def get(self, event_id):
         event = Event.query.get(event_id)
+
         if event:
-            return event.to_dict(), 200
+            event_data = {
+                'id': event.id,
+                'name': event.name,
+                'start_date': event.start_date.isoformat(),
+                'end_date': event.end_date.isoformat(),
+                'website_link': event.website_link,
+                'user_id': event.user_id
+            }
+
+            return event_data, 201
+        
         else:
             return {'message': 'Event not found'}, 404
 
@@ -156,7 +213,18 @@ class EventById(Resource):
 
         try:
             db.session.commit()
-            return event.to_dict(), 200
+
+            response = {
+                'id': event.id,
+                'name': event.name,
+                'start_date': event.start_date.isoformat(),
+                'end_date': event.end_date.isoformat(),
+                'website_link': event.website_link,
+                'user_id': event.user_id
+            }
+
+            return response, 200
+        
         except Exception as e:
             db.session.rollback()
             return {'message': 'Error updating event', 'error': str(e)}, 422
@@ -170,14 +238,26 @@ class EventById(Resource):
         return {'message': 'Event deleted'}, 200
     
     
-class Attendee(Resource):
+class Attendees(Resource):
     def get(self):
         try:
-            attendees = [attendee.to_dict() for attendee in Attendee.query.all()]
-            return jsonify(attendees)
+            attendees = Attendee.query.all()
+            attendees_data = []
+
+            for attendee in attendees:
+                attendee_data = {
+                    'id': attendee.id,
+                    'comment': attendee.comment,
+                    'user_id': attendee.user_id,
+                    'event_id': attendee.event_id
+                }
+
+                attendees_data.append(attendee_data)
+
+            return attendees_data, 201
 
         except Exception as e:
-            return {'error': str(e) + "error getting attendees."}, 422
+            return {'error': str(e)}, 422
 
     def post(self):
         data = request.get_json()
@@ -195,7 +275,14 @@ class Attendee(Resource):
         try:
             db.session.add(new_attendee)
             db.session.commit()
-            return new_attendee.to_dict(), 201
+            
+            response = {
+                'id': new_attendee.id,
+                'comment': new_attendee.comment,
+                'user_id': new_attendee.user_id,
+                'event_id': new_attendee.event_id,
+            }
+            return response, 201
         
         except Exception as e:
             return {'message': str(e)}, 500
@@ -204,8 +291,16 @@ class Attendee(Resource):
 class AttendeeById(Resource):
     def get(self, attendee_id):
         attendee = Attendee.query.get(attendee_id)
+
         if attendee:
-            return attendee.to_dict(), 200
+            response = { 
+                "id": attendee.id,
+                "comment": attendee.comment,
+                "user_id": attendee.user_id,
+                "event_id": attendee.event_id
+            }
+            return response, 200
+        
         else:
             return {'message': 'Attendee not found'}, 404
      
@@ -222,7 +317,14 @@ class AttendeeById(Resource):
 
         try:
             db.session.commit()
-            return attendee.to_dict(), 200
+            response = {
+                "id": attendee.id,
+                "comment": attendee.comment, 
+                "user_id": attendee.user_id,
+                "event_id": attendee.event_id
+            }
+
+            return response, 200
         
         except Exception as e:
             db.session.rollback()
@@ -243,6 +345,8 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
+api.add_resource(Attendees, '/attendees', endpoint='attendees')
+api.add_resource(AttendeeById, '/attendees/<int:attendee_id>', endpoint='attendee')
 
 # imported with project template
 @app.route('/')

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ProfileEdit({onEditClick}) {
+function ProfileEdit({ onEditClick }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 

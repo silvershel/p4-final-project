@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Event from "./Event";
 import EventForm from "./EventForm";
 
-function ProfileView({ user, events, onEditClick, onCreateClick, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
+function ProfileView({ user, events, onEditClick, onCreateClick, onUpdateEvent, onDeleteEvent, onCreateAttendee, onUpdateAttendee, onDeleteAttendee }) {
     const userEvents = events.filter(event => user.id === event.user_id)
     
     return(
@@ -20,8 +20,8 @@ function ProfileView({ user, events, onEditClick, onCreateClick, onDeleteEvent, 
                             key={event.id} 
                             user={user}
                             event={event} 
-                            onDeleteEvent={onDeleteEvent} 
                             onUpdateEvent={onUpdateEvent}
+                            onDeleteEvent={onDeleteEvent}
                         />
                     ))
                 ) : (

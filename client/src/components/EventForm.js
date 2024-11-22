@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function EventForm({ user, onCreateEvent, onCreateClick }) {
+function EventForm({ user, onCreateClick, onCreateEvent }) {
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -16,8 +16,8 @@ function EventForm({ user, onCreateEvent, onCreateClick }) {
             user_id: user.id
           };
         console.log(newEvent);
-        onCreateEvent(newEvent);
         onCreateClick()
+        onCreateEvent(newEvent);
     }
 
     return (

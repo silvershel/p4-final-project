@@ -3,7 +3,7 @@ import EventView from "./EventView";
 import EventEdit from "./EventEdit";
 import AttendForm from "./AttendForm";
 
-function Event({ user, event, onDeleteEvent, onUpdateEvent }) {
+function Event({ user, event, onUpdateEvent, onDeleteEvent }) {
     const [isEditing, setIsEditing] = useState(false)
     const [isAttending, setIsAttending] = useState(false)
 
@@ -20,8 +20,8 @@ function Event({ user, event, onDeleteEvent, onUpdateEvent }) {
             <EventEdit 
                 onViewClick={handleEditClick} 
                 event={event} 
+                onUpdateEvent={onUpdateEvent}
                 onDeleteEvent={onDeleteEvent} 
-                onUpdateEvent={onUpdateEvent} 
             />
         );
     } else if (isAttending) {

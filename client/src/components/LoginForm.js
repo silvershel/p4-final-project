@@ -1,6 +1,8 @@
 import React, {useState} from "react";
+import { useFormik } from 'formik';
+import { Link } from "react-router-dom";
 
-function LoginForm({ onLogin, style }) {
+function LoginForm({ style, onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
@@ -41,7 +43,7 @@ function LoginForm({ onLogin, style }) {
                 </div>
                 <button type="submit">Log In</button>
             </form>
-            <p>Don't have an account?</p>
+            <p>Don't have an account? <Link to="/signup">Signup</Link></p>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import ProfileEdit from "./ProfileEdit";
 import ProfileView from "./ProfileView";
 import EventForm from "./EventForm";
 
-function Profile({ user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) {
+function Profile({ user, events, onCreateEvent, onUpdateEvent, onDeleteEvent, onCreateAttendee, onUpdateAttendee, onDeleteAttendee}) {
     const [isEditing, setIsEditing] = useState(false)
     const [createEvent, setCreateEvent] = useState(false)
 
@@ -16,9 +16,19 @@ function Profile({ user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) 
     }
 
     if (isEditing) {
-        return <ProfileEdit onEditClick={handleProfileEditClick} />;
+        return (
+            <ProfileEdit 
+                onEditClick={handleProfileEditClick} 
+            />
+        );
     } else if (createEvent) {
-        return <EventForm user={user} onCreateClick={handleCreateEventClick} onCreateEvent={onCreateEvent} />;
+        return (
+            <EventForm 
+                user={user} 
+                onCreateClick={handleCreateEventClick} 
+                onCreateEvent={onCreateEvent} 
+            />
+        );
     } else {
         return (
             <ProfileView 
@@ -26,9 +36,12 @@ function Profile({ user, events, onDeleteEvent, onUpdateEvent, onCreateEvent }) 
                 events={events} 
                 onEditClick={handleProfileEditClick} 
                 onCreateClick={handleCreateEventClick} 
-                onDeleteEvent={onDeleteEvent} 
+                onCreateEvent={onCreateEvent}
                 onUpdateEvent={onUpdateEvent} 
-                onCreateEvent={onCreateEvent} 
+                onDeleteEvent={onDeleteEvent} 
+                onCreateAttendee={onCreateAttendee}
+                onUpdateAttendee={onUpdateAttendee}
+                onDeleteAttendee={onDeleteAttendee}
             />
         );
     }

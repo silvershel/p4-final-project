@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function EventEdit({ event, onViewClick, onDeleteEvent, onUpdateEvent }) {
+function EventEdit({ event, onViewClick, onUpdateEvent, onDeleteEvent }) {
     const [name, setName] = useState(event.name);
     const [startDate, setStartDate] = useState(event.start_date);
     const [endDate, setEndDate] = useState(event.end_date);

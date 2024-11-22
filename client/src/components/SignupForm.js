@@ -1,36 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function SignupForm({ onLogin }) {
+function SignupForm({ style, onSignup }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
-    const [accountType, setAccountType] = useState('standard');
-
-    const handleAccountTypeChange = (e) => {
-        setAccountType(e.target.value);
-      };
     
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch("/login", {
+        fetch("/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ 
-                firstName, 
-                lastName, 
-                username, 
-                password 
+                first_name: firstName, 
+                last_name: lastName, 
+                username: username, 
+                password: password 
             }),
         })
         .then((r) => {
             if (r.ok) {
-                r.json().then((user) => onLogin(user));
+                r.json().then((user) => onSignup(user));
             } else {
                 r.json().then((err) => setErrors(err.errors));
             }
@@ -38,7 +33,7 @@ function SignupForm({ onLogin }) {
     }
 
     return (
-        <div>
+        <div style={style}>
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <div>
