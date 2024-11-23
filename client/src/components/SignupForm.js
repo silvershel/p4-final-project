@@ -1,79 +1,134 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
 
 function SignupForm({ style, onSignup }) {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState([]);
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const formik = useFormik({
+        initialValues: {
+            first_name: "",
+            last_name: "",
+            username: "",
+            password: "",
+        },
 
-        fetch("/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ 
-                first_name: firstName, 
-                last_name: lastName, 
-                username: username, 
-                password: password 
-            }),
-        })
-        .then((r) => {
-            if (r.ok) {
-                r.json().then((user) => onSignup(user));
-            } else {
-                r.json().then((err) => setErrors(err.errors));
-            }
-        });
-    }
+        validationSchema: Yup.object({
+            first_name: Yup.string().required("First name is required"),
+            last_name: Yup.string().required("Last name is required"),
+            username: Yup.string().required("Username is required"),
+            password: Yup.string().required("Password is required"),
+        }),
+
+        onSubmit: (values, { setSubmitting, setErrors }) => {
+            fetch("/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    first_name: values.first_name,
+                    last_name: values.last_name,
+                    username: values.username,
+                    password: values.password,
+                }),
+            })
+                .then((r) => {
+                    setSubmitting(false);
+                    if (r.ok) {
+                        r.json().then((user) => onSignup(user));
+                    } else {
+                        r.json().then((err) => setErrors({ apiError: err.errors }));
+                    }
+                })
+                .catch(() => {
+                    setSubmitting(false);
+                    setErrors({ apiError: "Something went wrong. Please try again later." });
+                });
+        },
+    });
+
+    // const [firstName, setFirstName] = useState('');
+    // const [lastName, setLastName] = useState('');
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [errors, setErrors] = useState([]);
+    
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+
+    //     fetch("/signup", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({ 
+    //             first_name: firstName, 
+    //             last_name: lastName, 
+    //             username: username, 
+    //             password: password 
+    //         }),
+    //     })
+    //     .then((r) => {
+    //         if (r.ok) {
+    //             r.json().then((user) => onSignup(user));
+    //         } else {
+    //             r.json().then((err) => setErrors(err.errors));
+    //         }
+    //     });
+    // }
 
     return (
         <div style={style}>
             <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label>First Name:</label>
                     <input 
                         type="text"
                         id="first_name"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        name="first_name"
+                        onChange={formik.handleChange}
+                        value={formik.values.first_name}
                     />
+                    <p>{formik.errors.first_name}</p>
                 </div>
                 <div>
                     <label>Last Name:</label>
                     <input 
                         type="text"
                         id="last_name"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        name="last_name"
+                        onChange={formik.handleChange}
+                        value={formik.values.last_name}
                     />
+                    <p>{formik.errors.last_name}</p>
                 </div>
                 <div>
                     <label>Username:</label>
                     <input 
                         type="text"
                         id="username"
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)}
+                        name="username"
+                        onChange={formik.handleChange}
+                        value={formik.values.username}
                     />
+                    <p>{formik.errors.username}</p>
                 </div>
                 <div>
                     <label>Password:</label>
                     <input 
                         type="text" 
                         id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
                     />
+                    <p>{formik.errors.password}</p>
                 </div>
                 <div>
-                    {errors ? "" : "error."}
+                    {formik.errors.apiError ? (
+                        <div>{formik.errors.apiError}</div>
+                    ) : null}
                 </div>
                 <button>Sign Up</button>
                 <p>Already have an account? <Link to="/login">Log In</Link></p>
