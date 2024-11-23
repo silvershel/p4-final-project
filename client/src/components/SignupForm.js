@@ -47,36 +47,6 @@ function SignupForm({ style, onSignup }) {
         },
     });
 
-    // const [firstName, setFirstName] = useState('');
-    // const [lastName, setLastName] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [errors, setErrors] = useState([]);
-    
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-
-    //     fetch("/signup", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({ 
-    //             first_name: firstName, 
-    //             last_name: lastName, 
-    //             username: username, 
-    //             password: password 
-    //         }),
-    //     })
-    //     .then((r) => {
-    //         if (r.ok) {
-    //             r.json().then((user) => onSignup(user));
-    //         } else {
-    //             r.json().then((err) => setErrors(err.errors));
-    //         }
-    //     });
-    // }
-
     return (
         <div style={style}>
             <h1>Sign Up</h1>
