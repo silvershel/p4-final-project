@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
-function EventEdit({ event, onViewClick, onUpdateEvent, onDeleteEvent }) {
+function EventEdit({ onUpdateEvent, onDeleteEvent }) {
+    const { eventId } = useParams()
+    const [event, setEvent] = useState([])
     const [name, setName] = useState(event.name);
     const [startDate, setStartDate] = useState(event.start_date);
     const [endDate, setEndDate] = useState(event.end_date);
     const [websiteLink, setWebsiteLink] = useState(event.website_link);
+    const history = useHistory()
+
+    useEffect(() => {
+        fetch(`/events/${eventId}`)
+        .then((r) => r.json())
+        .then((event) => {
+            console.log(event);
+            setEvent(event);
+            setName(event.name)
+            setStartDate(event.start_date)
+            setEndDate(event.end_date)
+            setWebsiteLink(event.website_link)
+        })
+        .catch((error) => console.error('Error fetching event:', error));
+    }, [])
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -16,11 +34,12 @@ function EventEdit({ event, onViewClick, onUpdateEvent, onDeleteEvent }) {
           };
           console.log(updatedEvent);
         onUpdateEvent(event.id, updatedEvent)
-        onViewClick()
+        history.push("/");
     }
 
     function handleDelete() {
         onDeleteEvent(event.id);
+        history.push("/");
     }
 
     return (

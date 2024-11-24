@@ -6,7 +6,10 @@ import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventList from "./components/EventList";
+import EventDetails from "./components/EventDetails";
+import EventEdit from "./components/EventEdit";
 import Profile from "./components/Profile";
+import ProfileEdit from "./components/ProfileEdit";
 import ErrorPage from "./components/ErrorPage";
 
 // styles
@@ -29,16 +32,6 @@ function App() {
 	}, [])
 
 	useEffect(() => {
-        fetch("/events")
-        .then((r) => r.json())
-        .then((events) => {
-            console.log(events);
-            setEvents(events);
-        })
-        .catch((error) => console.error('Error fetching events:', error));
-    }, [])
-
-	useEffect(() => {
         fetch("/attendees")
         .then((r) => r.json())
         .then((attendees) => {
@@ -48,9 +41,73 @@ function App() {
         .catch((error) => console.error('Error fetching events:', error));
     }, [])
 
+	useEffect(() => {
+        fetch("/events")
+        .then((r) => r.json())
+        .then((events) => {
+            console.log(events);
+            setEvents(events);
+        })
+        .catch((error) => console.error('Error fetching events:', error));
+    }, [])
+
 	function handleLogout() {
 		setUser(null);
 	};
+
+	function handleCreateAttendee(newAttendee) {
+		fetch('/attendees', {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify(newAttendee),
+		})
+		  .then((r) => r.json())
+		  .then((newAttendee) => {
+			setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
+		  })
+		  .catch((error) => {
+			console.error('Error creating new attendee:', error);
+		  });
+	  };
+
+	function handleUpdateAttendee(attendeeId, updatedAttendee) {
+        fetch(`/attendee/${attendeeId}`, {
+            method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(updatedAttendee),
+		})
+        .then((r) => r.json())
+		.then((updatedAttendee) => {
+			setEvents((prevAttendees) => 
+				prevAttendees.map((attendee) =>
+					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
+				)
+			);
+		})
+		.catch((error) => {
+			console.error("Error updating attendee:", error);
+		});
+    }
+
+	function handleDeleteAttendee(attendeeId) {
+        fetch(`/attendees/${attendeeId}`, {
+            method: 'DELETE',
+        })
+        .then(r => {
+            if (r.ok) {
+				setAttendees((prevAttendees) => prevAttendees.filter(attendee => attendee.id !== attendeeId));
+            } else {
+                console.error("Unable to delete attendee.");
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting attendee:", error);
+        });
+    }
 
 	function handleCreateEvent(newEvent) {
 		fetch('/events', {
@@ -107,60 +164,6 @@ function App() {
         });
     }
 
-	function handleCreateAttendee(newAttendee) {
-		fetch('/attendees', {
-		  method: 'POST',
-		  headers: {
-			'Content-Type': 'application/json',
-		  },
-		  body: JSON.stringify(newAttendee),
-		})
-		  .then((r) => r.json())
-		  .then((newAttendee) => {
-			setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
-		  })
-		  .catch((error) => {
-			console.error('Error creating new attendee:', error);
-		  });
-	  };
-
-	function handleUpdateAttendee(attendeeId, updatedAttendee) {
-        fetch(`/attendee/${attendeeId}`, {
-            method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(updatedAttendee),
-		})
-        .then((r) => r.json())
-		.then((updatedAttendee) => {
-			setEvents((prevAttendees) => 
-				prevAttendees.map((attendee) =>
-					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
-				)
-			);
-		})
-		.catch((error) => {
-			console.error("Error updating attendee:", error);
-		});
-    }
-
-	function handleDeleteAttendee(attendeeId) {
-        fetch(`/attendees/${attendeeId}`, {
-            method: 'DELETE',
-        })
-        .then(r => {
-            if (r.ok) {
-				setAttendees((prevAttendees) => prevAttendees.filter(attendee => attendee.id !== attendeeId));
-            } else {
-                console.error("Unable to delete attendee.");
-            }
-        })
-        .catch(error => {
-            console.error("Error deleting attendee:", error);
-        });
-    }
-
 	if (!user) {
 		return (
 			<Router>
@@ -197,21 +200,43 @@ function App() {
 						events={events} 
 						onUpdateEvent={handleUpdateEvent}
 						onDeleteEvent={handleDeleteEvent} 
-						onCreateAttendee={handleCreateAttendee}
-						onUpdateAttendee={handleUpdateAttendee}
-						onDeleteAttendee={handleDeleteAttendee}
 					/>
 				</Route>
-				<Route path="/profile" exact component={Profile}>
+				<Route path="/events" exact>
+				<EventList 
+						user={user} 
+						events={events} 
+						onUpdateEvent={handleUpdateEvent}
+						onDeleteEvent={handleDeleteEvent} 
+					/>
+				</Route>
+				<Route path="/events/:eventId" exact>
+					<EventDetails
+						attendees={attendees} 
+						user={user} 
+						onUpdateEvent={handleUpdateEvent} 
+						onDeleteEvent={handleDeleteEvent} 
+					/>
+				</Route>
+				<Route path="/events/:eventId/edit" exact>
+					<EventEdit 
+						user={user} 
+						onUpdateEvent={handleUpdateEvent} 
+						onDeleteEvent={handleDeleteEvent}
+					/>
+				</Route>
+				<Route path="/profile" exact>
 					<Profile 
 						user={user} 
 						events={events} 
 						onCreateEvent={handleCreateEvent}
 						onUpdateEvent={handleUpdateEvent} 
 						onDeleteEvent={handleDeleteEvent} 
-						onCreateAttendee={handleCreateAttendee}
-						onUpdateAttendee={handleUpdateAttendee}
-						onDeleteAttendee={handleDeleteAttendee}
+					/>
+				</Route>
+				<Route path="/profile/edit" exact>
+					<ProfileEdit 
+						user={user} 
 					/>
 				</Route>
 				<Route path="*" component={ErrorPage} />
@@ -222,3 +247,21 @@ function App() {
 }
 
 export default App;
+
+// UPDATED ROUTES
+// "/login" - LoginForm
+// "/signup" - SignupForm
+
+// "/" Home - EventList
+
+// "/events" - EventList
+// "/events/${eventId}" - EventDetails
+
+// ROUTES TO UPDATE
+// "/users/${username}" - Profile
+	// shows basic profile and list of all that user's events
+	// if logged-in user, buttons appear to edit profile and manage events
+// "/users/${username}/edit" - ProfileEdit
+
+// "/events/${username}" - EventList (or UserEventList?)
+// "/events/${username}/create" - EventForm

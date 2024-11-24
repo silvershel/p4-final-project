@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-function ProfileEdit({ onEditClick }) {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+function ProfileEdit() {
 
 
     return (
@@ -11,13 +9,13 @@ function ProfileEdit({ onEditClick }) {
             <form>
                 <div>
                     <label>First Name:</label>
-                    <input type="text" value={firstName}/>
+                    <input type="text"/>
                 </div>
                 <div>
                     <label>Last Name:</label>
-                    <input type="text" value={lastName}/>
+                    <input type="text"/>
                 </div>
-                <button onClick={onEditClick}>Submit</button>
+                <button>Submit</button>
             </form>
         </div>
     )

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Event from "./Event";
+import EventPreview from "./EventPreview";
 
 function EventList({ user, events, onUpdateEvent, onDeleteEvent }) {
 
@@ -8,7 +8,7 @@ function EventList({ user, events, onUpdateEvent, onDeleteEvent }) {
             <h1>All Events</h1>
             {events.length > 0 ? (
                 events.map((event) => (
-                    <Event key={event.id} user={user} event={event} onUpdateEvent={onUpdateEvent} onDeleteEvent={onDeleteEvent} />
+                    <EventPreview key={event.id} user={user} event={event} onUpdateEvent={onUpdateEvent} onDeleteEvent={onDeleteEvent} />
                 ))
             ) : (
                 <>

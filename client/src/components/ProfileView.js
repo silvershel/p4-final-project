@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Event from "./Event";
+import EventPreview from "./EventPreview";
 import EventForm from "./EventForm";
 
 function ProfileView({ user, events, onEditClick, onCreateClick, onUpdateEvent, onDeleteEvent, onCreateAttendee, onUpdateAttendee, onDeleteAttendee }) {
@@ -16,7 +16,7 @@ function ProfileView({ user, events, onEditClick, onCreateClick, onUpdateEvent, 
             <div>
                 {userEvents.length > 0 ? (
                     userEvents.map((event) => (
-                        <Event 
+                        <EventPreview 
                             key={event.id} 
                             user={user}
                             event={event} 
