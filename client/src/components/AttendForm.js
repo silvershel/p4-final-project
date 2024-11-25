@@ -1,41 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
 function AttendForm({ user, onAttend }) {
-    const [comment, setComment] = useState("")
     const { eventId } = useParams()
     const history = useHistory()
 
-    function handleSubmit() {
-        onAttend();
-    }
+    const formik = useFormik({
+        initialValues: {
+            comment: "",
+        },
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        const newAttendee = {
-            comment: comment,
-            event_id: eventId,
-            user_id: user.id
-          };
-        console.log(newAttendee);
-        onAttend(newAttendee);
-        history.push(`/events/${eventId}`);
-    }
+        validationSchema: Yup.object({
+            comment: Yup.string().required("Please add a comment."),
+        }),
+
+        onSubmit: (values) => {
+            const newAttendee = {
+                comment: values.comment,
+                event_id: eventId,
+                user_id: user.id
+            };
+            console.log(newAttendee);
+            onAttend(newAttendee);
+            history.push(`/events/${eventId}`)
+        }
+    });
 
     return (
         <div>
             <h1>Attend Event</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label>Comment:</label>
                     <input 
                         type="text"
+                        id="comment"
                         name="comment"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
+                        value={formik.values.comment}
+                        onChange={formik.handleChange}
                     />
+                    <p>{formik.errors.comment}</p>
                 </div>
                 <button>Submit</button>
             </form>
