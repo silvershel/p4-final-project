@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
 
 function AttendForm({ user, onAttend }) {
     const [comment, setComment] = useState("")

@@ -57,60 +57,6 @@ function App() {
 		setUser(null);
 	};
 
-	function handleCreateAttendee(newAttendee) {
-		fetch('/attendees', {
-		  method: 'POST',
-		  headers: {
-			'Content-Type': 'application/json',
-		  },
-		  body: JSON.stringify(newAttendee),
-		})
-		  .then((r) => r.json())
-		  .then((newAttendee) => {
-			setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
-		  })
-		  .catch((error) => {
-			console.error('Error creating new attendee:', error);
-		  });
-	  };
-
-	function handleUpdateAttendee(attendeeId, updatedAttendee) {
-        fetch(`/attendee/${attendeeId}`, {
-            method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(updatedAttendee),
-		})
-        .then((r) => r.json())
-		.then((updatedAttendee) => {
-			setEvents((prevAttendees) => 
-				prevAttendees.map((attendee) =>
-					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
-				)
-			);
-		})
-		.catch((error) => {
-			console.error("Error updating attendee:", error);
-		});
-    }
-
-	function handleDeleteAttendee(attendeeId) {
-        fetch(`/attendees/${attendeeId}`, {
-            method: 'DELETE',
-        })
-        .then(r => {
-            if (r.ok) {
-				setAttendees((prevAttendees) => prevAttendees.filter(attendee => attendee.id !== attendeeId));
-            } else {
-                console.error("Unable to delete attendee.");
-            }
-        })
-        .catch(error => {
-            console.error("Error deleting attendee:", error);
-        });
-    }
-
 	function handleCreateEvent(newEvent) {
 		fetch('/events', {
 		  method: 'POST',
@@ -163,6 +109,60 @@ function App() {
         })
         .catch(error => {
             console.error("Error deleting event:", error);
+        });
+    }
+
+	function handleCreateAttendee(newAttendee) {
+		fetch('/attendees', {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify(newAttendee),
+		})
+		  .then((r) => r.json())
+		  .then((newAttendee) => {
+			setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
+		  })
+		  .catch((error) => {
+			console.error('Error creating new attendee:', error);
+		  });
+	  };
+
+	function handleUpdateAttendee(attendeeId, updatedAttendee) {
+        fetch(`/attendee/${attendeeId}`, {
+            method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(updatedAttendee),
+		})
+        .then((r) => r.json())
+		.then((updatedAttendee) => {
+			setEvents((prevAttendees) => 
+				prevAttendees.map((attendee) =>
+					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
+				)
+			);
+		})
+		.catch((error) => {
+			console.error("Error updating attendee:", error);
+		});
+    }
+
+	function handleDeleteAttendee(attendeeId) {
+        fetch(`/attendees/${attendeeId}`, {
+            method: 'DELETE',
+        })
+        .then(r => {
+            if (r.ok) {
+				setAttendees((prevAttendees) => prevAttendees.filter(attendee => attendee.id !== attendeeId));
+            } else {
+                console.error("Unable to delete attendee.");
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting attendee:", error);
         });
     }
 
@@ -230,6 +230,7 @@ function App() {
 				<Route path="/create" exact>
 					<EventForm 
 						user={user} 
+						onAttend={handleCreateAttendee}
 						onCreateEvent={handleCreateEvent}
 					/>
 				</Route>
