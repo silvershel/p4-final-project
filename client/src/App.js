@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import EventList from "./components/EventList";
 import EventDetails from "./components/EventDetails";
 import EventEdit from "./components/EventEdit";
+import EventForm from "./components/EventForm";
+import EventList from "./components/EventList";
 import Profile from "./components/Profile";
 import ProfileEdit from "./components/ProfileEdit";
 import ErrorPage from "./components/ErrorPage";
+import AttendForm from "./components/AttendForm";
 
 // styles
 const containerStyle = {
@@ -198,24 +200,24 @@ function App() {
 					<EventList 
 						user={user} 
 						events={events} 
-						onUpdateEvent={handleUpdateEvent}
-						onDeleteEvent={handleDeleteEvent} 
 					/>
 				</Route>
 				<Route path="/events" exact>
-				<EventList 
+					<EventList 
 						user={user} 
 						events={events} 
-						onUpdateEvent={handleUpdateEvent}
-						onDeleteEvent={handleDeleteEvent} 
 					/>
 				</Route>
 				<Route path="/events/:eventId" exact>
 					<EventDetails
 						attendees={attendees} 
 						user={user} 
-						onUpdateEvent={handleUpdateEvent} 
-						onDeleteEvent={handleDeleteEvent} 
+					/>
+				</Route>
+				<Route path="/events/:eventId/attend" exact>
+					<AttendForm 
+						user={user}
+						onAttend={handleCreateAttendee}
 					/>
 				</Route>
 				<Route path="/events/:eventId/edit" exact>
@@ -225,20 +227,19 @@ function App() {
 						onDeleteEvent={handleDeleteEvent}
 					/>
 				</Route>
+				<Route path="/create" exact>
+					<EventForm 
+						user={user} 
+						onCreateEvent={handleCreateEvent}
+					/>
+				</Route>
 				<Route path="/profile" exact>
 					<Profile 
 						user={user} 
-						events={events} 
-						onCreateEvent={handleCreateEvent}
-						onUpdateEvent={handleUpdateEvent} 
-						onDeleteEvent={handleDeleteEvent} 
+						events={events}
 					/>
 				</Route>
-				<Route path="/profile/edit" exact>
-					<ProfileEdit 
-						user={user} 
-					/>
-				</Route>
+				<Route path="/profile/edit" exact component={ProfileEdit} />
 				<Route path="*" component={ErrorPage} />
 			</Switch>
 		</div>
@@ -248,15 +249,6 @@ function App() {
 
 export default App;
 
-// UPDATED ROUTES
-// "/login" - LoginForm
-// "/signup" - SignupForm
-
-// "/" Home - EventList
-
-// "/events" - EventList
-// "/events/${eventId}" - EventDetails
-
 // ROUTES TO UPDATE
 // "/users/${username}" - Profile
 	// shows basic profile and list of all that user's events
@@ -264,4 +256,3 @@ export default App;
 // "/users/${username}/edit" - ProfileEdit
 
 // "/events/${username}" - EventList (or UserEventList?)
-// "/events/${username}/create" - EventForm

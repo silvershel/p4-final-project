@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-function EventForm({ user, onCreateClick, onCreateEvent }) {
+function EventForm({ user, onCreateEvent }) {
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [websiteLink, setWebsiteLink] = useState("");
+    const history = useHistory()
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -16,8 +18,8 @@ function EventForm({ user, onCreateClick, onCreateEvent }) {
             user_id: user.id
           };
         console.log(newEvent);
-        onCreateClick()
         onCreateEvent(newEvent);
+        history.push('/profile')
     }
 
     return (

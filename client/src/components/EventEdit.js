@@ -34,7 +34,7 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
           };
           console.log(updatedEvent);
         onUpdateEvent(event.id, updatedEvent)
-        history.push("/");
+        history.push(`/events/${eventId}`);
     }
 
     function handleDelete() {

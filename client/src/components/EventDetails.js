@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useParams } from "react-router-dom";
 
 function EventDetails({ user, attendees }) {
     const [event, setEvent] = useState([])
@@ -24,7 +24,9 @@ function EventDetails({ user, attendees }) {
             <p>Starts: {event.start_date}</p>
             <p>Ends: {event.end_date}</p>
             <p >Website: {event.website_link}</p>
-            <button>Attend Event</button>
+            <Link to={`/events/${event.id}/attend`}>
+                <button>Attend Event</button>
+            </Link>
             {user.id === event.user_id ? (
                 <Link to={`/events/${event.id}/edit`}>
                     <button>Edit Event</button>
@@ -42,7 +44,7 @@ function EventDetails({ user, attendees }) {
                 ))
             ) : (
                 <>
-                <h2>No One Attending Yet</h2>
+                <p>No One Attending Yet</p>
                 </>
             )}
         </div>

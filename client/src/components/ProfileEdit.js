@@ -2,7 +2,6 @@ import React from "react";
 
 function ProfileEdit() {
 
-
     return (
         <div>
             <h1>Edit Profile</h1>
